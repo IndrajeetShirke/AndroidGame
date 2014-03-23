@@ -1,11 +1,12 @@
 package com.example.game;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 
 
 public class Ball {
-	public Rectangle sprite;
+	public Sprite sprite;
 	private int SPEEDX = -5;
 	private int SPEEDY = -5;
 	private Camera camera;
@@ -18,13 +19,21 @@ public class Ball {
 		if(sprite.getY() <= 0 || sprite.getY() + sprite.getHeight() >= camera.getHeight()) {
 			SPEEDY = SPEEDY * -1;
 		}
+		
+		if(sprite.collidesWith(Wall.getWall(camera).sprite)) {
+			SPEEDX = SPEEDX * -1;
+			if(sprite.getY() < Wall.getWall(camera).sprite.getY() || sprite.getY() > Wall.getWall(camera).sprite.getHeight() + Wall.getWall(camera).sprite.getY()) {
+				SPEEDY = SPEEDY * -1;
+			}
+		}
 		sprite.setY(sprite.getY() + SPEEDY);
 	}
 	
-	public Ball(Camera camera, int x, int y) {
+	public Ball(Camera camera, int x, int y, ITextureRegion region) {
 		this.camera = camera;
-		sprite = new Rectangle(0, 0, 70, 30, MainActivity.getSharedInstance()
-				.getVertexBufferObjectManager());
+		/*sprite = new Dia(0, 0, 70, 30, MainActivity.getSharedInstance()
+				.getVertexBufferObjectManager());*/
+		sprite = new Sprite(x,y,region,MainActivity.getSharedInstance().getVertexBufferObjectManager());
 		sprite.setPosition(x,y);
 		sprite.setVisible(true);
 	}
