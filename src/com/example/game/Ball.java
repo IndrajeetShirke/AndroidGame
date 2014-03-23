@@ -7,8 +7,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
 public class Ball {
 	public Sprite sprite;
-	private int SPEEDX = -5;
-	private int SPEEDY = -5;
+	private int SPEEDX = -2;
+	private int SPEEDY = -2;
 	private Camera camera;
 	
 	public void update() {
@@ -25,7 +25,14 @@ public class Ball {
 			if(sprite.getY() < Wall.getWall(camera).sprite.getY() || sprite.getY() > Wall.getWall(camera).sprite.getHeight() + Wall.getWall(camera).sprite.getY()) {
 				SPEEDY = SPEEDY * -1;
 			}
+		} else if(sprite.collidesWith(Wall1.getWall(camera).sprite)) {
+			SPEEDX = SPEEDX * -1;
+			if(sprite.getY() < Wall1.getWall(camera).sprite.getY() || sprite.getY() > Wall1.getWall(camera).sprite.getHeight() + Wall1.getWall(camera).sprite.getY()) {
+				SPEEDY = SPEEDY * -1;
+			}
 		}
+		
+		
 		sprite.setY(sprite.getY() + SPEEDY);
 	}
 	

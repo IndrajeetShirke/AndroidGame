@@ -3,23 +3,22 @@ package com.example.game;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle;
 
-public class Wall {
+public class Wall1 {
 	protected Rectangle sprite;
 	private Camera camera;
-	private static Wall instance;
+	private static Wall1 instance;
 	private final int HEIGHT = 400;
 	private final int WIDTH = 10;
-	
-	public static Wall getWall(Camera camera) {
+	public static Wall1 getWall(Camera camera) {
 		if(instance == null ) {
-			instance = new Wall(camera);
+			instance = new Wall1(camera);
 		}
 		return instance;
 	}
 	
-	public Wall(Camera camera) {
+	public Wall1(Camera camera) {
 		this.camera = camera;
-		sprite = new Rectangle(this.camera.getWidth()/2, -200, WIDTH, HEIGHT, MainActivity.getSharedInstance()
+		sprite = new Rectangle(this.camera.getWidth()/2, this.camera.getHeight()-HEIGHT/2, WIDTH, HEIGHT, MainActivity.getSharedInstance()
 				.getVertexBufferObjectManager());		
 		sprite.setVisible(true);
 	}
@@ -27,8 +26,8 @@ public class Wall {
 	public void move(float accelerometerSpeedY) {
 		if (accelerometerSpeedY != 0) {
 
-			int lL = -400;
-			int uL = 0;//(int) (camera.getHeight() - (camera.getHeight() - 2*HEIGHT + HEIGHT));
+			int lL = (int) (camera.getHeight()-HEIGHT);
+			int uL = (int) camera.getHeight();
 
 			float newY;
 

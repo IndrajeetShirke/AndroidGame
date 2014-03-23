@@ -33,6 +33,7 @@ public class SensorListener implements SensorEventListener {
 				// Log.v("Jimvaders",
 				// "SensorListener onSensorChanged() accelerometerSpeedX = "+event.values[1]);
 				scene.accelerometerSpeedY = event.values[0];
+				scene.accelerometerSpeedY*=2;
 				break;
 			default:
 				break;

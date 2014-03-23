@@ -42,7 +42,8 @@ public class MainScene extends Scene {
 		
 		Wall w = Wall.getWall(activity.mCamera);
 		attachChild(w.sprite);
-		
+		Wall1 w1 = Wall1.getWall(activity.mCamera);
+		attachChild(w1.sprite);
 
 		MainActivity.getSharedInstance().setCurrentScene(this);
 		sensorManager = (SensorManager)MainActivity.getSharedInstance().getSystemService(BaseGameActivity.SENSOR_SERVICE);
@@ -81,5 +82,6 @@ public class MainScene extends Scene {
 		}
 		
 		Wall.getWall(activity.mCamera).move(accelerometerSpeedY);
+		Wall1.getWall(activity.mCamera).move(accelerometerSpeedY);
 	}
 }
