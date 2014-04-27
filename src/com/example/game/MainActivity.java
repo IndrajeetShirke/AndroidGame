@@ -65,7 +65,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 	@Override
 	protected Scene onCreateScene() {
 		mEngine.registerUpdateHandler(new FPSLogger());
-		mCurrentScene = new MainScene();
+		mCurrentScene = new SplashScene();
 		return mCurrentScene;
 	}
 

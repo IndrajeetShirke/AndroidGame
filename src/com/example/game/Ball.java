@@ -10,7 +10,9 @@ public class Ball {
 	private int SPEEDX = -2;
 	private int SPEEDY = -2;
 	private Camera camera;
-	
+	public static final int ROUND = 1;
+	public static final int SQUARE = 2;
+	public int type;
 	public void update() {
 		if(sprite.getX() <= 0 || sprite.getX() + sprite.getWidth() >= camera.getWidth()) {
 			SPEEDX = SPEEDX * -1;
@@ -36,8 +38,9 @@ public class Ball {
 		sprite.setY(sprite.getY() + SPEEDY);
 	}
 	
-	public Ball(Camera camera, int x, int y, ITextureRegion region) {
+	public Ball(Camera camera, int x, int y, ITextureRegion region, int type) {
 		this.camera = camera;
+		this.type = type;
 		/*sprite = new Dia(0, 0, 70, 30, MainActivity.getSharedInstance()
 				.getVertexBufferObjectManager());*/
 		sprite = new Sprite(x,y,region,MainActivity.getSharedInstance().getVertexBufferObjectManager());

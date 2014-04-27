@@ -51,4 +51,8 @@ public class Wall1 {
 		}
 		
 	}
+	
+	public void setPosition(float y) {
+		sprite.setPosition(sprite.getX(), y);
+	}
 }

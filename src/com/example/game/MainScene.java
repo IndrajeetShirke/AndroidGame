@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.input.touch.TouchEvent;
 
-
-import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
 
@@ -25,12 +24,12 @@ public class MainScene extends Scene {
 		activity = MainActivity.getSharedInstance();
 		
 		
-		int i = 10;
+		int i = 2;
 		while(i>0) {
 			if(i%2 == 0) {
-				list.add(new Ball(activity.mCamera, randomWithRange(0, (int)activity.mCamera.getWidth()),randomWithRange(0, (int)activity.mCamera.getHeight()), activity.mRoundFaceTextureRegion));
+				list.add(new Ball(activity.mCamera, randomWithRange(0, (int)activity.mCamera.getWidth()),randomWithRange(0, (int)activity.mCamera.getHeight()), activity.mRoundFaceTextureRegion, Ball.ROUND));
 			} else {
-				list.add(new Ball(activity.mCamera, randomWithRange(0, (int)activity.mCamera.getWidth()),randomWithRange(0, (int)activity.mCamera.getHeight()), activity.mSquareFaceTextureRegion));
+				list.add(new Ball(activity.mCamera, randomWithRange(0, (int)activity.mCamera.getWidth()),randomWithRange(0, (int)activity.mCamera.getHeight()), activity.mSquareFaceTextureRegion, Ball.SQUARE));
 			}
 			
 			i--;
@@ -46,9 +45,19 @@ public class MainScene extends Scene {
 		attachChild(w1.sprite);
 
 		MainActivity.getSharedInstance().setCurrentScene(this);
-		sensorManager = (SensorManager)MainActivity.getSharedInstance().getSystemService(BaseGameActivity.SENSOR_SERVICE);
+		/*sensorManager = (SensorManager)MainActivity.getSharedInstance().getSystemService(BaseGameActivity.SENSOR_SERVICE);
 		SensorListener.getSharedInstance();
-		sensorManager.registerListener(SensorListener.getSharedInstance(), sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+		sensorManager.registerListener(SensorListener.getSharedInstance(), sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);*/
+		
+		this.setOnSceneTouchListener(new IOnSceneTouchListener() {
+			
+			@Override
+			public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+				Wall.getWall(activity.mCamera).setPosition(pSceneTouchEvent.getY() - (40 + 400));
+				Wall1.getWall(activity.mCamera).setPosition(pSceneTouchEvent.getY() + 40);
+				return false;
+			}
+		});
 		
 		
 		registerUpdateHandler(new IUpdateHandler() {
@@ -61,7 +70,13 @@ public class MainScene extends Scene {
 			
 			@Override
 			public void onUpdate(float pSecondsElapsed) {
-				move();
+				
+				
+				if(checkForWinning()){
+					setChildScene(new ResultScene(activity.mCamera));
+				} else {
+					move();
+				}
 			}
 		});
 		//loadResources();
@@ -81,7 +96,23 @@ public class MainScene extends Scene {
 			b.update();
 		}
 		
-		Wall.getWall(activity.mCamera).move(accelerometerSpeedY);
-		Wall1.getWall(activity.mCamera).move(accelerometerSpeedY);
+		//Wall.getWall(activity.mCamera).move(accelerometerSpeedY);
+		//Wall1.getWall(activity.mCamera).move(accelerometerSpeedY);
+	}
+	
+	public boolean checkForWinning() {
+		Wall w = Wall.getWall(activity.mCamera);
+		for(Ball b : list) {
+			if(b.type == Ball.ROUND && w.sprite.getX() < b.sprite.getX()) {
+				return false;
+			} else if(b.type == Ball.SQUARE && w.sprite.getX() > b.sprite.getX()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void resetValues() {
+		clearChildScene();
 	}
 }
