@@ -2,9 +2,10 @@ package com.example.game;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.sprite.Sprite;
 
 public class Wall {
-	protected Rectangle sprite;
+	protected Sprite sprite;
 	private Camera camera;
 	private static Wall instance;
 	private final int HEIGHT = 400;
@@ -19,8 +20,10 @@ public class Wall {
 	
 	public Wall(Camera camera) {
 		this.camera = camera;
-		sprite = new Rectangle(this.camera.getWidth()/2, -200, WIDTH, HEIGHT, MainActivity.getSharedInstance()
-				.getVertexBufferObjectManager());		
+		/*sprite = new Rectangle(this.camera.getWidth()/2, -200, WIDTH, HEIGHT, MainActivity.getSharedInstance()
+				.getVertexBufferObjectManager());*/
+		
+		sprite = new Sprite(this.camera.getWidth()/2,-200,MainActivity.getSharedInstance().wallTextureRegion,MainActivity.getSharedInstance().getVertexBufferObjectManager());
 		sprite.setVisible(true);
 	}
 	

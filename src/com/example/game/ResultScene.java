@@ -45,6 +45,7 @@ public class ResultScene extends CameraScene implements IOnSceneTouchListener {
 		if (!done)
 			return true;
 		((MainScene) activity.mCurrentScene).resetValues();
+		
 		return false;
 	}
 

@@ -9,9 +9,17 @@ import org.andengine.entity.scene.menu.item.TextMenuItem;
 //placeHolder scene class for the main menu, currently only includes a start menu item 
 public class MainMenuScene extends MenuScene implements
 		IOnMenuItemClickListener {
+	static MainMenuScene INSTANCE;
 	MainActivity activity;
 	final int MENU_START = 0;
+	final int MENU_OPTIONS = 1;
 
+	public static MainMenuScene getMainMenuScene() {
+		if(INSTANCE == null){
+			INSTANCE = new MainMenuScene();
+		}
+		return INSTANCE;
+	}
 	public MainMenuScene() {
 		super(MainActivity.getSharedInstance().mCamera);
 		activity = MainActivity.getSharedInstance();
@@ -24,7 +32,13 @@ public class MainMenuScene extends MenuScene implements
 				/ 2, mCamera.getHeight() / 2 - startButton.getHeight() / 2);
 
 		addMenuItem(startButton);
+		
+		IMenuItem optionsButton = new TextMenuItem(MENU_OPTIONS, activity.mFont,
+				activity.getString(R.string.options),
+				activity.getVertexBufferObjectManager());
+		optionsButton.setPosition(startButton.getX(), startButton.getY() + 100);
 
+		addMenuItem(optionsButton);
 		setOnMenuItemClickListener(this);
 	}
 
@@ -34,7 +48,10 @@ public class MainMenuScene extends MenuScene implements
 		switch (arg1.getID()) {
 		case MENU_START:
 			activity.setCurrentScene(new MainScene());
+			detachChildren();
 			return true;
+		case MENU_OPTIONS :
+			break;
 		default:
 			break;
 		}

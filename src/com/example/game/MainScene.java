@@ -7,22 +7,62 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.SpriteBackground;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+
 
 import android.hardware.SensorManager;
 
 
 
-public class MainScene extends Scene {
+public class MainScene extends Scene implements IUpdateHandler{
+	static MainScene INSTANCE; 
 	MainActivity activity;
 	public float accelerometerSpeedY;
 	SensorManager sensorManager;
 	List<Ball> list = new ArrayList<Ball>();
+	private IUpdateHandler gameLoopUpdateHandler = new IUpdateHandler(){
+
+		@Override
+		public void onUpdate(float pSecondsElapsed) {
+			if(checkForWinning()){
+				activity.mMusic.stop();
+				setChildScene(new ResultScene(activity.mCamera));
+				clearUpdateHandlers();
+			} else {
+				move();
+			}			
+		}
+
+		@Override
+		public void reset() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	};
+	
+	public static MainScene getMainScene() {
+		if(INSTANCE == null) {
+			INSTANCE = new MainScene();
+		}
+			return INSTANCE;
+	}
 	public MainScene() {
-		setBackground(new Background(0.09804f, 0.6274f, 0));
 		
+		intialize();	
+		//loadResources();
+
+	}
+	
+	public void intialize() {
 		activity = MainActivity.getSharedInstance();
+		Sprite bgSprite = new Sprite(0,0,activity.backgroundTextureRegion,activity.getVertexBufferObjectManager());
+		Background bg = new SpriteBackground(bgSprite);
+		setBackground(bg);
 		
+		activity.mMusic.play();
 		
 		int i = 2;
 		while(i>0) {
@@ -59,28 +99,7 @@ public class MainScene extends Scene {
 			}
 		});
 		
-		
-		registerUpdateHandler(new IUpdateHandler() {
-			
-			@Override
-			public void reset() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				
-				
-				if(checkForWinning()){
-					setChildScene(new ResultScene(activity.mCamera));
-				} else {
-					move();
-				}
-			}
-		});
-		//loadResources();
-
+		registerUpdateHandler(gameLoopUpdateHandler);
 	}
 	
 	
@@ -114,5 +133,11 @@ public class MainScene extends Scene {
 	
 	public void resetValues() {
 		clearChildScene();
+		detachChildren();
+		list.clear();
+		intialize();
+		//activity.setCurrentScene(new MainMenuScene());
 	}
+	
+	
 }
