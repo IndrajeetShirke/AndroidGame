@@ -5,10 +5,12 @@ import java.io.IOException;
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.text.Text;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -51,6 +53,8 @@ public class MainActivity extends SimpleBaseGameActivity {
 		eo.getAudioOptions().setNeedsMusic(true);
 		return eo;
 	}
+	
+
 
 	@Override
 	protected void onCreateResources() {
@@ -67,7 +71,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 		
 		AssetBitmapTextureAtlasSource sourceBox = AssetBitmapTextureAtlasSource.create(getAssets(), "gfx/boxface.png");
 		AssetBitmapTextureAtlasSource sourceRound = AssetBitmapTextureAtlasSource.create(getAssets(), "gfx/circleface_tiled.png");
-		AssetBitmapTextureAtlasSource wallSource = AssetBitmapTextureAtlasSource.create(getAssets(), "gfx/chain.jpg");
+		AssetBitmapTextureAtlasSource wallSource = AssetBitmapTextureAtlasSource.create(getAssets(), "gfx/chain.png");
 		AssetBitmapTextureAtlasSource backgroundSource = AssetBitmapTextureAtlasSource.create(getAssets(), "gfx/gameBackground.png");
 		
 		this.mSquareFaceTextureRegion = TextureRegionFactory.createFromSource(atlastSquare, sourceBox, 0,0);
@@ -76,7 +80,6 @@ public class MainActivity extends SimpleBaseGameActivity {
 		this.backgroundTextureRegion =  TextureRegionFactory.createFromSource(backgroundAtlas, backgroundSource, 0, 0);
 		 
 		 
-		
 		//load resource
 		atlastSquare.load();
 		atlastRound.load();
