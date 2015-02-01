@@ -73,7 +73,7 @@ public class MainScene extends Scene implements IUpdateHandler{
 	
 	public void intialize() {
 		activity = MainActivity.getSharedInstance();
-		Sprite bgSprite = new Sprite(0,0,activity.backgroundTextureRegion,activity.getVertexBufferObjectManager());
+		Sprite bgSprite = new Sprite(0,0,activity.bgParallaxTextureRegion,activity.getVertexBufferObjectManager());
 		Background bg = new SpriteBackground(bgSprite);
 		setBackground(bg);
 		
